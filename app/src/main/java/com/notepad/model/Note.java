@@ -103,6 +103,17 @@ public class Note extends BaseModel {
 
     @Override
     boolean update(SQLiteDatabase db) {
-        return false;
+        ContentValues cv = new ContentValues();
+        super.update(cv);
+        if (categoryId > 0)
+            cv.put(COL_CATEGORYID, categoryId);
+        if (title!=null)
+            cv.put(COL_TITLE, title);
+        if (content!=null)
+            cv.put(COL_CONTENT, content);
+        if (type!=null)
+            cv.put(COL_TYPE, type);
+
+        return db.update(TABLE_NAME, cv, COL_ID+" = ?", new String[]{String.valueOf(id)}) == 1 ? true : false;
     }
 }
