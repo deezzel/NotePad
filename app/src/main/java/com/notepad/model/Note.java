@@ -1,6 +1,7 @@
 package com.notepad.model;
 
 import android.content.ContentValues;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.notepad.common.Util;
@@ -115,5 +116,41 @@ public class Note extends BaseModel {
             cv.put(COL_TYPE, type);
 
         return db.update(TABLE_NAME, cv, COL_ID+" = ?", new String[]{String.valueOf(id)}) == 1 ? true : false;
+    }
+
+    public boolean load(SQLiteDatabase db){
+        Cursor cursor = db.query(TABLE_NAME, null, COL_ID+" = ?", new String[]{String.valueOf(id)},null,null,null);
+        try{
+            if (cursor.moveToFirst()){
+                reset();
+                super.load(cursor);
+                categoryId = cursor.getLong(cursor.getColumnIndex(COL_CATEGORYID));
+                title = cursor.getString(cursor.getColumnIndex(COL_TITLE));
+                content = cursor.getString(cursor.getColumnIndex(COL_CONTENT));
+                type = cursor.getString(cursor.getColumnIndex(COL_TYPE));
+                return true;
+            }
+            return false;
+        } finally {
+            cursor.close();
+        }
+    }
+
+    public static Cursor list(SQLiteDatabase db, String... args){
+        String categoryId = args != null ? args[0] : null;
+
+        String[] columns = {COL_ID, COL_CREATEDTIME, COL_MODIFIEDTIME, COL_LOCKED, COL_CATEGORYID, COL_TITLE, COL_CONTENT, COL_TYPE};
+        String selection = "1 = 1";
+
+    }
+
+    public void reset() {
+        super.reset();
+        categoryId = 0;
+        title = null;
+        content = null;
+        type = null;
+        attachments = null;
+        checkList = null;
     }
 }

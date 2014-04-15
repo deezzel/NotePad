@@ -71,5 +71,11 @@ abstract class BaseModel extends AbstractModel {
         isLocked = cursor.getInt(cursor.getColumnIndex(COL_LOCKED)) == 1 ? true : false;
     }
 
+    protected void reset(){
+        id = 0;
+        createdTime = 0;
+        modifiedTime = 0;
+        isLocked = null;
+    }
 
 }
