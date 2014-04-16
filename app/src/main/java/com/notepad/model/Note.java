@@ -17,6 +17,7 @@ public class Note extends BaseModel {
     public static final String COL_ID = BaseModel.COL_ID;
     public static final String COL_CREATEDTIME = BaseModel.COL_CREATEDTIME;
     public static final String COL_MODIFIEDTIME = BaseModel.COL_MODIFIEDTIME;
+    public static final String COL_LOCKED = BaseModel.COL_LOCKED;
     public static final String COL_CATEGORYID = "category_id";
     public static final String COL_TITLE = "title";
     public static final String COL_CONTENT = "content";
@@ -82,7 +83,7 @@ public class Note extends BaseModel {
     private List<CheckItem> checkList;
     private List<Attachment> attachments;
 
-    static String getSql(){
+    public static String getSql(){
         return Util.concat("CREATE TABLE ", TABLE_NAME, " (", BaseModel.getSql(),
                 COL_CATEGORYID, " INTEGER ",
                 COL_TITLE, " TEXT ",
@@ -91,7 +92,7 @@ public class Note extends BaseModel {
     }
 
     @Override
-    long save(SQLiteDatabase db) {
+    public long save(SQLiteDatabase db) {
         ContentValues cv = new ContentValues();
         super.save(cv);
         cv.put(COL_CATEGORYID, categoryId);
@@ -136,13 +137,13 @@ public class Note extends BaseModel {
         }
     }
 
-    public static Cursor list(SQLiteDatabase db, String... args){
-        String categoryId = args != null ? args[0] : null;
-
-        String[] columns = {COL_ID, COL_CREATEDTIME, COL_MODIFIEDTIME, COL_LOCKED, COL_CATEGORYID, COL_TITLE, COL_CONTENT, COL_TYPE};
-        String selection = "1 = 1";
-
-    }
+//    public static Cursor list(SQLiteDatabase db, String... args){
+//        String categoryId = args != null ? args[0] : null;
+//
+//        String[] columns = {COL_ID, COL_CREATEDTIME, COL_MODIFIEDTIME, COL_LOCKED, COL_CATEGORYID, COL_TITLE, COL_CONTENT, COL_TYPE};
+//        String selection = "1 = 1";
+//
+//    }
 
     public void reset() {
         super.reset();
